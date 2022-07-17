@@ -1,3 +1,6 @@
+
+//NOTES:
+//req.query is multifaceted, often combining multiple parameters, whereas req.param is specific to a single property, often intended to retrieve a single record
 const fs = require('fs');
 const path = require('path');
 const express = require('express');
@@ -64,12 +67,13 @@ app.get('/api/animals', (req, res) => {
   }
   res.json(results);
 });
-
+//NOTICE: A param route must come after the other GET route. 
 app.get('/api/animals/:id', (req, res) => {
   const result = findById(req.params.id, animals);
   if (result) {
     res.json(result);
   } else {
+    //Remember that the 404 status code is meant to communicate to the client that the requested resource could not be found. 
     res.send(404);
   }
 });
@@ -79,7 +83,6 @@ app.post('/api/animals', (req, res) => {
   //Remember, the length property is always going to be one number ahead of the last index of the array so we can avoid any duplicate values.
   req.body.id = animals.length.toString();
   const animal= createNewAnimal(req.body, animals);
-
   res.json(req.body);
 });
 
